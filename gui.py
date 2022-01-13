@@ -80,10 +80,10 @@ def checkValidPath(self, path):
 
 
 # This function prints all the json and csv files we have selected
-def addAllTheValidPath(self, path_list):
+def addAllTheValidPath(self, path_list, filetype):
     for path in path_list:
         if os.path.isfile(path):
-            if path.endswith('.json') or path.endswith('.csv'):
+            if path.endswith(filetype) :
                 self.file_list_widget.addItem(path)
                 self.csv_and_json_files.append(path)
         else:
@@ -101,14 +101,17 @@ class Ui_MainWindow(object):
         self.file_list_widget = QtWidgets.QListWidget(self.centralwidget)
         self.file_list_widget.setGeometry(QtCore.QRect(40, 60, 531, 181))
         self.file_list_widget.setObjectName("file_list_widget")
+        self.select_dir_btn = QtWidgets.QPushButton(self.centralwidget)
+        self.select_dir_btn.setGeometry(QtCore.QRect(40, 20, 101, 31))
+        self.select_dir_btn.setObjectName("select_dir_btn")
         self.old_word_lbl = QtWidgets.QLabel(self.centralwidget)
-        self.old_word_lbl.setGeometry(QtCore.QRect(10, 280, 201, 31))
+        self.old_word_lbl.setGeometry(QtCore.QRect(10, 300, 201, 31))
         self.old_word_lbl.setObjectName("old_word_lbl")
         self.new_word_ldl = QtWidgets.QLabel(self.centralwidget)
         self.new_word_ldl.setGeometry(QtCore.QRect(10, 340, 191, 31))
         self.new_word_ldl.setObjectName("new_word_ldl")
         self.old_word_Qtext = QtWidgets.QTextEdit(self.centralwidget)
-        self.old_word_Qtext.setGeometry(QtCore.QRect(210, 280, 361, 31))
+        self.old_word_Qtext.setGeometry(QtCore.QRect(210, 300, 361, 31))
         self.old_word_Qtext.setObjectName("old_word_Qtext")
         self.new_word_Qtext = QtWidgets.QTextEdit(self.centralwidget)
         self.new_word_Qtext.setGeometry(QtCore.QRect(210, 340, 361, 31))
@@ -123,16 +126,20 @@ class Ui_MainWindow(object):
         self.clear_btn.setGeometry(QtCore.QRect(30, 390, 141, 31))
         self.clear_btn.setObjectName("clear_btn")
         self.check_if_file_exist_btn = QtWidgets.QPushButton(self.centralwidget)
-        self.check_if_file_exist_btn.setGeometry(QtCore.QRect(410, 20, 161, 31))
+        self.check_if_file_exist_btn.setGeometry(QtCore.QRect(40, 250, 161, 31))
         self.check_if_file_exist_btn.setObjectName("check_if_file_exist_btn")
         self.select_files_btn = QtWidgets.QPushButton(self.centralwidget)
-        self.select_files_btn.setGeometry(QtCore.QRect(210, 20, 141, 31))
+        self.select_files_btn.setGeometry(QtCore.QRect(150, 20, 81, 31))
         self.select_files_btn.setObjectName("select_files_btn")
-        self.select_btn_dir = QtWidgets.QPushButton(self.centralwidget)
-        self.select_btn_dir.setGeometry(QtCore.QRect(40, 20, 151, 31))
-        self.select_btn_dir.setObjectName("select_btn_dir")
-
-
+        self.file_type_Qtext = QtWidgets.QTextEdit(self.centralwidget)
+        self.file_type_Qtext.setGeometry(QtCore.QRect(440, 20, 131, 31))
+        self.file_type_Qtext.setObjectName("file_type_Qtext")
+        self.file_type_lbl = QtWidgets.QLabel(self.centralwidget)
+        self.file_type_lbl.setGeometry(QtCore.QRect(320, 20, 111, 31))
+        self.file_type_lbl.setObjectName("file_type_lbl")
+        self.prfix_Qtext = QtWidgets.QTextEdit(self.centralwidget)
+        self.prfix_Qtext.setGeometry(QtCore.QRect(220, 250, 351, 31))
+        self.prfix_Qtext.setObjectName("prfix_Qtext")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 607, 21))
@@ -141,13 +148,14 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-
+        self.file_type = str()
         self.csv_and_json_files = []
 
-        self.select_btn_dir.clicked.connect(self.select_dir_func)
+        self.select_dir_btn.clicked.connect(self.select_dir_func)
         self.select_files_btn.clicked.connect(self.select_file_func)
         self.run_btn.clicked.connect(self.run_chenges)
         self.clear_btn.clicked.connect(self.clear)
@@ -158,7 +166,7 @@ class Ui_MainWindow(object):
         dialog.setFileMode(QtWidgets.QFileDialog.AnyFile)
         dialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog, True)
         file_view = dialog.findChild(QtWidgets.QListView, 'listView')
-
+        self.file_type = self.file_type_Qtext.toPlainText()
         # to make it possible to select multiple directories:
         if file_view:
             file_view.setSelectionMode(QtWidgets.QAbstractItemView.MultiSelection)
@@ -166,7 +174,7 @@ class Ui_MainWindow(object):
         if f_tree_view:
             f_tree_view.setSelectionMode(QtWidgets.QAbstractItemView.MultiSelection)
         if dialog.exec():
-            addAllTheValidPath(self, dialog.selectedFiles())
+            addAllTheValidPath(self, dialog.selectedFiles(), self.file_type)
 
 
     def select_dir_func(self):
@@ -174,6 +182,7 @@ class Ui_MainWindow(object):
         dialog.setFileMode(QtWidgets.QFileDialog.DirectoryOnly)
         dialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog, True)
         file_view = dialog.findChild(QtWidgets.QListView, 'listView')
+        self.file_type = self.file_type_Qtext.toPlainText()
 
         # to make it possible to select multiple directories:
         if file_view:
@@ -183,7 +192,7 @@ class Ui_MainWindow(object):
             f_tree_view.setSelectionMode(QtWidgets.QAbstractItemView.MultiSelection)
         if dialog.exec():
             selected_dir = dialog.selectedFiles()
-        addAllTheValidPath(self, selected_dir)
+        addAllTheValidPath(self, selected_dir, self.file_type)
 
 
     def run_chenges(self):
@@ -201,37 +210,38 @@ class Ui_MainWindow(object):
         self.terminal.clear()
 
     def check_if_file_exist_func(self):
-
         if len(self.csv_and_json_files) == 0:
             return
         else:
+            prefix = self.prfix_Qtext.toPlainText()
             for file in self.csv_and_json_files:
-                print(file)
-                f = open(file, "r")
-                print(f)
-                if file[-4:] == ".csv":
-
-                    reader = csv.reader(f)
-                    for row in reader:
-                        if row[4].count("/") > 0 and row[4][1] == ":":
-                            checkValidPath(self, row[4])
-                if file[-5:] == ".json":
-                    json_content = json.load(f)
-                    for obj in json_content["testsToRun"]:
-                        checkValidPath(self, obj["url"])
-                f.close()
+                if file.endswith("json"):
+                    df = pd.read_json(file)
+                    for obj in df.values[0]:
+                        checkValidPath(self, obj['url'])
+                else:
+                    df = pd.read_table(file)
+                    for line in df.values:
+                        line = line[0].split(',')
+                        for val in line:
+                            if val.startswith(prefix):
+                                checkValidPath(self, val)
 
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.select_btn_dir.setText(_translate("MainWindow", "select directory"))
-        self.old_word_lbl.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt; color:#ff0000;\">old word (word to replace)</span></p><p align=\"center\"><span style=\" font-size:12pt; color:#ff0000;\"><br/></span></p></body></html>"))
-        self.new_word_ldl.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt; color:#005500;\">new word (word to insert)</span></p></body></html>"))
+        self.select_dir_btn.setText(_translate("MainWindow", "select directory"))
+        self.old_word_lbl.setText(_translate("MainWindow",
+                                             "<html><head/><body><p><span style=\" font-size:12pt; color:#ff0000;\">old word (word to replace)</span></p><p align=\"center\"><span style=\" font-size:12pt; color:#ff0000;\"><br/></span></p></body></html>"))
+        self.new_word_ldl.setText(_translate("MainWindow",
+                                             "<html><head/><body><p><span style=\" font-size:12pt; color:#005500;\">new word (word to insert)</span></p></body></html>"))
         self.run_btn.setText(_translate("MainWindow", "run"))
         self.clear_btn.setText(_translate("MainWindow", "clear"))
-        self.check_if_file_exist_btn.setText(_translate("MainWindow", "check if files exist"))
+        self.check_if_file_exist_btn.setText(_translate("MainWindow", "check if files exist in prefix"))
         self.select_files_btn.setText(_translate("MainWindow", "select files"))
+        self.file_type_lbl.setText(_translate("MainWindow",
+                                              "<html><head/><body><p><span style=\" font-size:12pt;\">chose file type:</span></p></body></html>"))
 
 
 if __name__ == "__main__":
