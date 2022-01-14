@@ -1,5 +1,5 @@
 StepName,Do,RunOrder,Quit on fail,Path,Repeats,TimeStart,TimeStop,Comment,,,,,
-test1,TRUE,0,GOTO NEXT,C:/Users/tc97526/Desktop/DE/WsGround.xml,1,,,,,,,,
+test1,TRUE,0,GOTO NEXT,C:/Users/tc97526/Desktop/DE/WsNaval.xml,1,,,,,,,,
 DBAction,Time_Out(msec),DB_Index,DB_Entry_Index,DB Name,DB Entry Name,Variable_Name,Value,ExpectedValue,StoredValue,Check,Units,RunOrder,SetDebugState_Value
 Get,1000,-1,0,a,a,a,a,a,a,a,a,a,a
 Get,1000,-1,1,a,a,a,a,a,a,a,a,a,a
@@ -10,7 +10,7 @@ Get,1000,-1,5,a,a,a,a,a,a,a,a,a,a
 Get,1000,-1,6,a,a,a,a,a,a,a,a,a,a
 Get,1000,-1,7,a,a,a,a,a,a,a,a,a,a
 StepName,Do,RunOrder,Quit on fail,Path,Repeats,TimeStart,TimeStop,Comment,,,,,
-test2,TRUE,0,GOTO NEXT,C:/Users/tc97526/Desktop/DE/WsGround.xml,1,,,,,,,,
+test2,TRUE,0,GOTO NEXT,C:/Users/tc97526/Desktop/DE/WsNaval.xml,1,,,,,,,,
 DBAction,Time_Out(msec),DB_Index,DB_Entry_Index,DB Name,DB Entry Name,Variable_Name,Value,ExpectedValue,StoredValue,Check,Units,RunOrder,SetDebugState_Value
 Get,1000,-1,0,a,a,a,a,a,a,a,a,a,a
 Get,1000,-1,1,a,a,a,a,a,a,a,a,a,a
